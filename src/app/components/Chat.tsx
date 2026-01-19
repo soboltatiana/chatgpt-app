@@ -22,7 +22,7 @@ export function Chat() {
 
         setMessage('');
         setMessages(completion.messages);
-        chatId.current = completion.chatId;
+        chatId.current = completion.chatId || null;
     }
 
     return (
