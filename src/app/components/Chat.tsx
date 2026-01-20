@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import {getCompletion, Message} from "@/server-actions/getCompletion";
 import {useRouter} from "next/navigation";
+import { Transcript } from "@/app/components/Transcript";
 
 interface ChatInterface {
     messages?: Message[],
@@ -38,22 +39,7 @@ export function Chat({ messages: initialMessages = [], chatId: initialChatId}: C
 
     return (
         <div className="flex flex-col">
-            {messages.map((message, i) => (
-                <div
-                    key={i}
-                    className={`mb-5 flex flex-col ${
-                        message.role === "user" ? "items-end" : "items-start"
-                    }`}
-                >
-                    <div
-                        className={`${
-                            message.role === "user" ? "bg-blue-500" : "bg-gray-500 text-black"
-                        } rounded-md py-2 px-8`}
-                    >
-                        {message.content}
-                    </div>
-                </div>
-            ))}
+            <Transcript messages={messages} truncate={false} />
             <div className="flex border-t-2 border-t-gray-500 pt-3 mt-3">
                 <Input
                     className="flex-grow text-xl"

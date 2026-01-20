@@ -2,7 +2,6 @@ import {getChat} from "@/db";
 import {Chat} from "@/app/components/Chat";
 import { notFound, redirect } from "next/navigation";
 import { getServerSession } from "next-auth";
-import {red} from "next/dist/lib/picocolors";
 
 export const dynamic='force-dynamic';
 

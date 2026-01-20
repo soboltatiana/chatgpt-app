@@ -65,7 +65,7 @@ export async function getChat(
 
     return {
         ...chat,
-        timestamp: new Date(chat.timestamp),
+        createdAt: new Date(chat.created_at),
         messages: messages as StoredMessage[]
     } as ChatWithMessages;
 }
@@ -75,7 +75,7 @@ export async function getChats(userEmail: string): Promise<Chat[]> {
         .from('chats')
         .select('*')
         .eq('user_email', userEmail)
-        .order('timestamp', { ascending: false });
+        .order('created_at', { ascending: false });
 
     if (error) {
         throw new Error(`Failed to get chats: ${error.message}`);
@@ -83,7 +83,7 @@ export async function getChats(userEmail: string): Promise<Chat[]> {
 
     return (chats || []).map(chat => ({
         ...chat,
-        timestamp: new Date(chat.timestamp)
+        createdAt: new Date(chat.created_at)
     })) as Chat[];
 }
 
@@ -94,7 +94,7 @@ export async function getChatsWithMessages(
         .from('chats')
         .select('*')
         .eq('user_email', userEmail)
-        .order('timestamp', { ascending: false })
+        .order('created_at', { ascending: false })
         .limit(3);
 
     if (chatsError) {
@@ -127,7 +127,7 @@ export async function getChatsWithMessages(
 
     return chats.map(chat => ({
         ...chat,
-        timestamp: new Date(chat.timestamp),
+        createdAt: new Date(chat.created_at),
         messages: messagesByChat[chat.id] || []
     })) as ChatWithMessages[];
 }
