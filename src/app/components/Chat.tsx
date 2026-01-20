@@ -4,14 +4,21 @@ import { useState, useRef } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import {getCompletion, Message} from "@/server-actions/getCompletion";
+import {useRouter} from "next/navigation";
 
-export function Chat() {
-    const [messages, setMessages] = useState<Message[]>([]);
+interface ChatInterface {
+    messages?: Message[],
+    chatId?: number,
+}
+
+export function Chat({ messages: initialMessages = [], chatId: initialChatId}: ChatInterface ) {
+    const [messages, setMessages] = useState<Message[]>(initialMessages);
     const [message, setMessage] = useState("");
-    const chatId = useRef<number|null>(null);
+    const chatId = useRef<number|null>(initialChatId);
+    const router = useRouter();
 
     const onClick = async () => {
-        const completion = await getCompletion(chatId.current,
+        const completion = await getCompletion(chatId.current || null,
             [
             ...messages,
             {
@@ -20,9 +27,13 @@ export function Chat() {
             }
         ]);
 
+        if (!chatId.current) {
+            router.push(`/chats/${completion.chatId}`);
+            return;
+        }
         setMessage('');
         setMessages(completion.messages);
-        chatId.current = completion.chatId || null;
+        chatId.current = completion.chatId;
     }
 
     return (
